@@ -6,14 +6,12 @@ let jobData = {
 
 export default function handler(req, res) {
   if (req.method === 'GET') {
-    // Calculate the current duration based on the last update
     const currentDate = new Date();
     const lastUpdatedDate = new Date(jobData.lastUpdated);
     const daysDifference = Math.floor((currentDate - lastUpdatedDate) / (1000 * 60 * 60 * 24));
     const duration = jobData.duration + daysDifference;
     res.status(200).json({ status: jobData.status, duration });
   } else if (req.method === 'POST') {
-    // Update job status and duration
     const { status, duration } = req.body;
     jobData = {
       status,

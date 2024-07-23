@@ -8,14 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const jobDurationInput = document.getElementById('job-duration-input');
     const clockElement = document.getElementById('clock');
 
-    // Fetch job data from the server
     async function fetchJobData() {
         const response = await fetch('/api/jobStatus');
         const data = await response.json();
         updateUI(data.status, data.duration);
     }
 
-    // Update UI
     function updateUI(status, duration) {
         jobStatusElement.textContent = status;
         jobDurationElement.textContent = duration;
@@ -33,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Save data
     async function saveData(status, duration) {
         await fetch('/api/jobStatus', {
             method: 'POST',
@@ -44,13 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Handle login
     loginForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const username = loginForm.username.value;
         const password = loginForm.password.value;
 
-        // Simplified login check with complex password
         if (username === 'admin' && password === 'P@ssw0rd1234!') {
             adminPanel.style.display = 'block';
             loginForm.style.display = 'none';
@@ -59,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Handle update
     updateForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const status = jobStatusSelect.value;
@@ -69,10 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
         await saveData(status, duration);
     });
 
-    // Fetch job data initially
     fetchJobData();
 
-    // Display clock
     function updateClock() {
         const now = new Date();
         clockElement.textContent = now.toLocaleTimeString();

@@ -12,12 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchJobData() {
         const response = await fetch('/api/jobStatus');
-        if (response.ok) {
-            const data = await response.json();
-            updateUI(data.status, data.duration, data.hoursSinceLastJob);
-        } else {
-            console.error('Failed to fetch job data');
-        }
+        const data = await response.json();
+        updateUI(data.status, data.duration, data.hoursSinceLastJob);
     }
 
     function updateUI(status, duration, hoursSinceLastJob) {
@@ -39,16 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function saveData(status, duration, lastJobTime) {
-        const response = await fetch('/api/jobStatus', {
+        await fetch('/api/jobStatus', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ status, duration, lastJobTime }),
         });
-        if (!response.ok) {
-            console.error('Failed to update job data');
-        }
     }
 
     loginForm.addEventListener('submit', (event) => {
@@ -70,9 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const duration = parseInt(jobDurationInput.value);
         const lastJobTime = lastJobTimeInput.value;
 
-        const lastJobTimeFormatted = lastJobTime ? new Date(lastJobTime).toISOString() : null;
-        updateUI(status, duration, lastJobTimeFormatted ? Math.floor((new Date() - new Date(lastJobTimeFormatted)) / (1000 * 60 * 60)) : 'N/A');
-        await saveData(status, duration, lastJobTimeFormatted);
+        updateUI(status, duration, Math.floor((new Date() - new Date(lastJobTime)) / (1000 * 60 * 60)));
+        await saveData(status, duration, lastJobTime);
     });
 
     fetchJobData();

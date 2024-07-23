@@ -3,7 +3,7 @@
   "routes": [
     {
       "src": "/api/jobStatus",
-      "dest": "/api/jobStatus.js"
+      "dest": "/jobStatus.js"
     }
   ]
 }

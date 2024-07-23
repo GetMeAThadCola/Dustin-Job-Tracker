@@ -61,12 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const status = jobStatusSelect.value;
         const lastJobTime = lastJobTimeInput.value;
 
-        updateUI(status, 0, 0); // Placeholder values for initial update
         await saveData(status, lastJobTime);
         fetchJobData(); // Refresh the data after saving
     });
 
-    fetchJobData();
+    fetchJobData(); // Initial fetch on load
 
     function updateClock() {
         const now = new Date();

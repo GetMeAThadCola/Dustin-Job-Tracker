@@ -1,10 +1,9 @@
 {
-    "version": 2,
-    "routes": [
-      {
-        "src": "/api/jobStatus",
-        "dest": "/jobStatus.js"
-      }
-    ]
-  }
-  
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/jobStatus",
+      "dest": "/api/jobStatus.js"
+    }
+  ]
+}

@@ -1,30 +1,27 @@
 let jobData = {
     status: 'No',
-    duration: 0,
-    lastUpdated: new Date().toISOString(),
     lastJobTime: null,
   };
   
   export default function handler(req, res) {
     if (req.method === 'GET') {
       const currentDate = new Date();
-      const lastUpdatedDate = new Date(jobData.lastUpdated);
-      const daysDifference = Math.floor((currentDate - lastUpdatedDate) / (1000 * 60 * 60 * 24));
-      const duration = jobData.duration + daysDifference;
+      let daysSinceLastJob = 0;
+      let hoursSinceLastJob = 'N/A';
   
-      let hoursSinceLastJob = null;
       if (jobData.lastJobTime) {
-        const lastJobTime = new Date(jobData.lastJobTime);
-        hoursSinceLastJob = Math.floor((currentDate - lastJobTime) / (1000 * 60 * 60));
+        const lastJobDate = new Date(jobData.lastJobTime);
+        const diffMilliseconds = currentDate - lastJobDate;
+        daysSinceLastJob = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(diffMilliseconds / (1000 * 60 * 60));
+        hoursSinceLastJob = hours % 24;
       }
   
-      res.status(200).json({ status: jobData.status, duration, hoursSinceLastJob });
+      res.status(200).json({ status: jobData.status, daysSinceLastJob, hoursSinceLastJob });
     } else if (req.method === 'POST') {
-      const { status, duration, lastJobTime } = req.body;
+      const { status, lastJobTime } = req.body;
       jobData = {
         status,
-        duration,
-        lastUpdated: new Date().toISOString(),
         lastJobTime: lastJobTime ? new Date(lastJobTime).toISOString() : null,
       };
       res.status(200).json({ message: 'Job data updated successfully' });

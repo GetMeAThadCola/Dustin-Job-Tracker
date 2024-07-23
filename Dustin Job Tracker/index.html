@@ -11,7 +11,7 @@
         <h1>Dustin Job Tracker</h1>
         <div class="status">
             <p>Does Dustin have a job? <span id="job-status" class="no">No</span></p>
-            <p>Duration: <span id="job-duration" class="no">0</span> days</p>
+            <p>Days Since Last Job: <span id="days-since-last-job" class="no">0</span></p>
             <p>Hours Since Last Job: <span id="hours-since-last-job">N/A</span></p>
             <p>Current Time: <span id="clock"></span></p>
         </div>
@@ -33,10 +33,8 @@
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                 </select>
-                <label for="job-duration-input">Duration (days):</label>
-                <input type="number" id="job-duration-input" min="0" required>
                 <label for="last-job-time">Last Job Time (YYYY-MM-DDTHH:MM):</label>
-                <input type="datetime-local" id="last-job-time">
+                <input type="datetime-local" id="last-job-time" required>
                 <button type="submit">Update</button>
             </form>
         </div>
@@ -44,5 +42,4 @@
     <script src="script.js"></script>
 </body>
 </html>
-
 

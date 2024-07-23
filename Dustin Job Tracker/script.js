@@ -6,23 +6,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateForm = document.getElementById('update-form');
     const jobStatusSelect = document.getElementById('job-status-select');
     const jobDurationInput = document.getElementById('job-duration-input');
+    const clockElement = document.getElementById('clock');
 
-    // Load stored data
-    let jobStatus = localStorage.getItem('jobStatus') || 'No';
-    let jobDuration = parseInt(localStorage.getItem('jobDuration')) || 0;
-    let lastUpdated = new Date(localStorage.getItem('lastUpdated')) || new Date();
-
-    // Update duration based on last update
-    const currentDate = new Date();
-    const daysDifference = Math.floor((currentDate - lastUpdated) / (1000 * 60 * 60 * 24));
-    jobDuration += daysDifference;
+    // Fetch job data from the server
+    async function fetchJobData() {
+        const response = await fetch('/api/job');
+        const data = await response.json();
+        updateUI(data.status, data.duration);
+    }
 
     // Update UI
-    function updateUI() {
-        jobStatusElement.textContent = jobStatus;
-        jobDurationElement.textContent = jobDuration;
+    function updateUI(status, duration) {
+        jobStatusElement.textContent = status;
+        jobDurationElement.textContent = duration;
 
-        if (jobStatus === 'Yes') {
+        if (status === 'Yes') {
             jobStatusElement.classList.add('yes');
             jobStatusElement.classList.remove('no');
             jobDurationElement.classList.add('yes');
@@ -35,13 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    updateUI();
-
     // Save data
-    function saveData() {
-        localStorage.setItem('jobStatus', jobStatus);
-        localStorage.setItem('jobDuration', jobDuration);
-        localStorage.setItem('lastUpdated', new Date());
+    async function saveData(status, duration) {
+        await fetch('/api/job', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status, duration }),
+        });
     }
 
     // Handle login
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = loginForm.password.value;
 
         // Simplified login check with complex password
-        if (username === 'admin' && password === 'Roxas2020') {
+        if (username === 'admin' && password === 'P@ssw0rd1234!') {
             adminPanel.style.display = 'block';
             loginForm.style.display = 'none';
         } else {
@@ -60,12 +60,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Handle update
-    updateForm.addEventListener('submit', (event) => {
+    updateForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        jobStatus = jobStatusSelect.value;
-        jobDuration = parseInt(jobDurationInput.value);
+        const status = jobStatusSelect.value;
+        const duration = parseInt(jobDurationInput.value);
 
-        updateUI();
-        saveData();
+        updateUI(status, duration);
+        await saveData(status, duration);
     });
+
+    // Fetch job data initially
+    fetchJobData();
+
+    // Display clock
+    function updateClock() {
+        const now = new Date();
+        clockElement.textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
 });

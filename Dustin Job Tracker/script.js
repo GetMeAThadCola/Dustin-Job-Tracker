@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const username = loginForm.username.value;
         const password = loginForm.password.value;
 
-        if (username === 'admin' && password === 'P@ssw0rd1234!') {
+        if (username === 'admin' && password === 'bustindustin') {
             adminPanel.style.display = 'block';
             loginForm.style.display = 'none';
         } else {

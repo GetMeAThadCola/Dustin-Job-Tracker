@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch job data from the server
     async function fetchJobData() {
-        const response = await fetch('/api/job');
+        const response = await fetch('/api/jobStatus');
         const data = await response.json();
         updateUI(data.status, data.duration);
     }
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Save data
     async function saveData(status, duration) {
-        await fetch('/api/job', {
+        await fetch('/api/jobStatus', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

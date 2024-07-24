@@ -6,8 +6,10 @@
     <title>Dustin Job Tracker</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
         body {
-            font-family: 'Press Start 2P', Bold;
+            font-family: 'Press Start 2P', cursive;
             background-color: #222;
             color: #fff;
             text-align: center;
@@ -63,30 +65,30 @@
         #clock {
             font-weight: bold;
         }
-        #loading-bar {
-            width: 100%;
-            height: 4px;
-            background: #555;
-            overflow: hidden;
-            position: fixed;
-            top: 0;
-            left: 0;
+        #spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        #loading-bar div {
-            height: 100%;
-            width: 0;
-            background: #007bff;
-            animation: loading 3s linear forwards;
+        .spinner-wheel {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #007bff;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
         }
-        @keyframes loading {
-            to {
-                width: 100%;
-            }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div id="loading-bar"><div></div></div>
+    <div id="spinner">
+        <div class="spinner-wheel"></div>
+    </div>
     <div class="container" id="main-content" style="display: none;">
         <h1>Dustin Job Tracker</h1>
         <div class="status">

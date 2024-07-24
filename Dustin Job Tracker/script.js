@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lastJobTimeInput = document.getElementById('last-job-time');
     const clockElement = document.getElementById('clock');
     const mainContent = document.getElementById('main-content');
+    const spinner = document.getElementById('spinner');
 
     // Set reference point for July 23, 2024, at 8:00 AM
     const referencePoint = new Date('2024-07-23T08:00:00');
@@ -124,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Show main content after loading
     setTimeout(() => {
-        document.getElementById('loading-bar').style.display = 'none';
+        spinner.style.display = 'none';
         mainContent.style.display = 'block';
     }, 3000);
 

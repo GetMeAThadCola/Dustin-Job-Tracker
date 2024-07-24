@@ -6,13 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminPanel = document.getElementById('admin-panel');
     const updateForm = document.getElementById('update-form');
     const jobStatusSelect = document.getElementById('job-status-select');
-    const lastJobTimeInput = document.getElementById('last-job-time');
     const clockElement = document.getElementById('clock');
 
     async function fetchJobData() {
-        const response = await fetch('/api/jobStatus');
-        const data = await response.json();
-        updateUI(data.status, data.daysSinceLastJob, data.hoursSinceLastJob);
+        try {
+            const response = await fetch('/api/jobStatus');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            updateUI(data.status, data.daysSinceLastJob, data.hoursSinceLastJob);
+        } catch (error) {
+            console.error('Failed to fetch job data:', error);
+        }
     }
 
     function updateUI(status, daysSinceLastJob, hoursSinceLastJob) {
@@ -33,14 +39,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function saveData(status, lastJobTime) {
-        await fetch('/api/jobStatus', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ status, lastJobTime }),
-        });
+    async function saveData(status) {
+        try {
+            const response = await fetch('/api/jobStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status }),
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            await response.json();
+        } catch (error) {
+            console.error('Failed to save job data:', error);
+        }
     }
 
     loginForm.addEventListener('submit', (event) => {
@@ -59,9 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const status = jobStatusSelect.value;
-        const lastJobTime = lastJobTimeInput.value;
 
-        await saveData(status, lastJobTime);
+        await saveData(status);
         fetchJobData(); // Refresh the data after saving
     });
 
@@ -73,4 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     setInterval(updateClock, 1000);
     updateClock();
+
+    // Fetch data every minute to keep it updated in real-time
+    setInterval(fetchJobData, 60000);
 });

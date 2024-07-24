@@ -17,7 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function calculateTimeSince(date) {
         const now = new Date();
-        const diff = now - date;
+        let diff = now - date;
+        if (diff < 0) diff = 0; // Ensure the difference is not negative
+
         const seconds = Math.floor((diff / 1000) % 60);
         const minutes = Math.floor((diff / 1000 / 60) % 60);
         const hours = Math.floor((diff / 1000 / 60 / 60) % 24);
@@ -89,41 +91,4 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Failed to save job data:', error);
         }
-    }
-
-    loginForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const username = loginForm.username.value;
-        const password = loginForm.password.value;
-
-        if (username === 'admin' && password === 'P@ssw0rd1234!') {
-            adminPanel.style.display = 'block';
-            loginForm.style.display = 'none';
-        } else {
-            alert('Invalid login credentials!');
-        }
-    });
-
-    updateForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const status = jobStatusSelect.value;
-
-        await saveData(status);
-        fetchJobData(); // Refresh the data after saving
-    });
-
-    function updateClock() {
-        const now = new Date();
-        clockElement.textContent = now.toLocaleTimeString();
-
-        const timeSince = calculateTimeSince(referencePoint);
-        updateUI('No', timeSince.days, timeSince.hours, timeSince.minutes, timeSince.seconds);
-    }
-
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // Fetch data every minute to keep it updated in real-time
-    setInterval(fetchJobData, 60000);
-    fetchJobData(); // Initial fetch on load
-});
+   

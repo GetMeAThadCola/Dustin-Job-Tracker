@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminPanel = document.getElementById('admin-panel');
     const updateForm = document.getElementById('update-form');
     const jobStatusSelect = document.getElementById('job-status-select');
+    const lastJobTimeInput = document.getElementById('last-job-time');
     const clockElement = document.getElementById('clock');
 
     async function fetchJobData() {
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         minutesSinceLastJobElement.textContent = minutesSinceLastJob;
         secondsSinceLastJobElement.textContent = secondsSinceLastJob;
 
+        // Update styling based on status
         if (status === 'Yes') {
             jobStatusElement.classList.add('yes');
             jobStatusElement.classList.remove('no');
@@ -56,13 +58,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function saveData(status) {
+        const lastJobTime = status === 'Yes' ? new Date().toISOString() : lastJobTimeInput.value;
+
         try {
             const response = await fetch('/api/jobStatus', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ status }),
+                body: JSON.stringify({ status, lastJobTime }),
             });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -94,8 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchJobData(); // Refresh the data after saving
     });
 
-    fetchJobData(); // Initial fetch on load
-
     function updateClock() {
         const now = new Date();
         clockElement.textContent = now.toLocaleTimeString();
@@ -105,4 +107,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch data every minute to keep it updated in real-time
     setInterval(fetchJobData, 60000);
+    fetchJobData(); // Initial fetch on load
 });

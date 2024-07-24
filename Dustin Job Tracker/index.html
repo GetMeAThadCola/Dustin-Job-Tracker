@@ -5,35 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dustin Job Tracker</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .status p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .status .yes {
+            color: green;
+        }
+        .status .no {
+            color: red;
+        }
+        .login-form, .admin-panel {
+            margin: 20px 0;
+        }
+        .login-form label, .admin-panel label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        .login-form input, .admin-panel input, .admin-panel select {
+            padding: 8px;
+            width: 100%;
+            max-width: 300px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .login-form button, .admin-panel button {
+            padding: 10px 15px;
+            border: none;
+            background: #007bff;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .login-form button:hover, .admin-panel button:hover {
+            background: #0056b3;
+        }
+        #clock {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <div id="job-status-container">
-        <p>Status: <span id="job-status"></span></p>
-        <p>Days: <span id="days-since-last-job"></span></p>
-        <p>Hours: <span id="hours-since-last-job"></span></p>
-        <p>Minutes: <span id="minutes-since-last-job"></span></p>
-        <p>Seconds: <span id="seconds-since-last-job"></span></p>
+    <div class="container">
+        <h1>Dustin Job Tracker</h1>
+        <div class="status">
+            <p>Does Dustin have a job? <span id="job-status" class="no">No</span></p>
+            <p>Days Since Last Job: <span id="days-since-last-job" class="no">0</span></p>
+            <p>Hours Since Last Job: <span id="hours-since-last-job">0</span></p>
+            <p>Minutes Since Last Job: <span id="minutes-since-last-job">0</span></p>
+            <p>Seconds Since Last Job: <span id="seconds-since-last-job">0</span></p>
+            <p>Current Time: <span id="clock"></span></p>
+        </div>
+        <div class="login-form">
+            <h2>Admin Login</h2>
+            <form id="login-form">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        <div class="admin-panel" id="admin-panel" style="display: none;">
+            <h2>Admin Panel</h2>
+            <form id="update-form">
+                <label for="job-status-select">Job Status:</label>
+                <select id="job-status-select">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <label for="last-job-time">Last Job Time (YYYY-MM-DDTHH:MM):</label>
+                <input type="datetime-local" id="last-job-time" required>
+                <button type="submit">Update</button>
+            </form>
+        </div>
     </div>
-    <div id="login-form">
-        <form>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password">
-            <button type="submit">Login</button>
-        </form>
-    </div>
-    <div id="admin-panel" style="display:none;">
-        <form id="update-form">
-            <label for="job-status-select">Job Status:</label>
-            <select id="job-status-select">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-            <button type="submit">Update Status</button>
-        </form>
-    </div>
-    <div id="clock"></div>
     <script src="script.js"></script>
 </body>
 </html>

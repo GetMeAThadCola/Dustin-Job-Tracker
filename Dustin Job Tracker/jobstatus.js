@@ -34,13 +34,19 @@ export default function handler(req, res) {
       secondsSinceLastJob = Math.floor(diffMilliseconds / 1000) % 60;
     }
 
-    res.status(200).json({ status: jobData.status, daysSinceLastJob, hoursSinceLastJob, minutesSinceLastJob, secondsSinceLastJob });
+    res.status(200).json({
+      status: jobData.status,
+      daysSinceLastJob,
+      hoursSinceLastJob,
+      minutesSinceLastJob,
+      secondsSinceLastJob
+    });
   } else if (req.method === 'POST') {
-    const { status } = req.body;
+    const { status, lastJobTime } = req.body;
     const jobData = readJobData();
     const updatedJobData = {
       status,
-      lastJobTime: status === 'Yes' ? new Date().toISOString() : jobData.lastJobTime,
+      lastJobTime: status === 'Yes' ? new Date().toISOString() : lastJobTime || jobData.lastJobTime,
     };
     writeJobData(updatedJobData);
     res.status(200).json({ message: 'Job data updated successfully' });

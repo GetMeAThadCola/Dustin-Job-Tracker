@@ -11,9 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const lastJobTimeInput = document.getElementById('last-job-time');
     const clockElement = document.getElementById('clock');
 
-    // Set reference point for this morning at 8:00 AM
-    const referencePoint = new Date();
-    referencePoint.setHours(8, 0, 0, 0);
+    // Set reference point for July 23, 2024, at 8:00 AM
+    const referencePoint = new Date('2024-07-23T08:00:00');
 
     function calculateTimeSince(date) {
         const now = new Date();

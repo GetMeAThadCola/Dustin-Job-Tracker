@@ -11,17 +11,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const lastJobTimeInput = document.getElementById('last-job-time');
     const clockElement = document.getElementById('clock');
 
-    async function fetchJobData() {
-        try {
-            const response = await fetch('/api/jobStatus');
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            updateUI(data.status, data.daysSinceLastJob, data.hoursSinceLastJob, data.minutesSinceLastJob, data.secondsSinceLastJob);
-        } catch (error) {
-            console.error('Failed to fetch job data:', error);
-        }
+    // Set reference point for this morning at 8:00 AM
+    const referencePoint = new Date();
+    referencePoint.setHours(8, 0, 0, 0);
+
+    function calculateTimeSince(date) {
+        const now = new Date();
+        const diff = now - date;
+        const seconds = Math.floor((diff / 1000) % 60);
+        const minutes = Math.floor((diff / 1000 / 60) % 60);
+        const hours = Math.floor((diff / 1000 / 60 / 60) % 24);
+        const days = Math.floor(diff / 1000 / 60 / 60 / 24);
+        return { days, hours, minutes, seconds };
     }
 
     function updateUI(status, daysSinceLastJob, hoursSinceLastJob, minutesSinceLastJob, secondsSinceLastJob) {
@@ -54,6 +55,19 @@ document.addEventListener('DOMContentLoaded', () => {
             minutesSinceLastJobElement.classList.remove('yes');
             secondsSinceLastJobElement.classList.add('no');
             secondsSinceLastJobElement.classList.remove('yes');
+        }
+    }
+
+    async function fetchJobData() {
+        try {
+            const response = await fetch('/api/jobStatus');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            updateUI(data.status, data.daysSinceLastJob, data.hoursSinceLastJob, data.minutesSinceLastJob, data.secondsSinceLastJob);
+        } catch (error) {
+            console.error('Failed to fetch job data:', error);
         }
     }
 
@@ -101,7 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateClock() {
         const now = new Date();
         clockElement.textContent = now.toLocaleTimeString();
+
+        const timeSince = calculateTimeSince(referencePoint);
+        updateUI('No', timeSince.days, timeSince.hours, timeSince.minutes, timeSince.seconds);
     }
+
     setInterval(updateClock, 1000);
     updateClock();
 

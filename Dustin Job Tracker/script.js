@@ -126,6 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateClock();
 
     // Fetch data every minute to keep it updated in real-time
-    setInterval(fetchJobData, 60000
-
-   
+    setInterval(fetchJobData, 60000);
+    fetchJobData(); // Initial fetch on load
+});

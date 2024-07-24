@@ -9,114 +9,110 @@
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
         body {
-    font-family: 'Press Start 2P', cursive;
-    background-color: #222;
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-    overflow: hidden;
-    margin: 0;
-    position: relative;
-}
+            font-family: 'Press Start 2P', cursive;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+            margin: 0;
+            position: relative;
+        }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #333;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #333;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
 
-.status p {
-    font-size: 1.2em;
-    margin: 10px 0;
-}
+        .status p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
 
-.status .yes {
-    color: green;
-}
+        .status .yes {
+            color: green;
+        }
 
-.status .no {
-    color: red;
-}
+        .status .no {
+            color: red;
+        }
 
-.login-form, .admin-panel {
-    margin: 20px 0;
-}
+        .login-form, .admin-panel {
+            margin: 20px 0;
+        }
 
-.login-form label, .admin-panel label {
-    display: block;
-    margin: 10px 0 5px;
-}
+        .login-form label, .admin-panel label {
+            display: block;
+            margin: 10px 0 5px;
+        }
 
-.login-form input, .admin-panel input, .admin-panel select {
-    padding: 8px;
-    width: 100%;
-    max-width: 300px;
-    margin: 5px 0;
-    border: 1px solid #555;
-    border-radius: 4px;
-    background: #444;
-    color: #fff;
-}
+        .login-form input, .admin-panel input, .admin-panel select {
+            padding: 8px;
+            width: 100%;
+            max-width: 300px;
+            margin: 5px 0;
+            border: 1px solid #555;
+            border-radius: 4px;
+            background: #444;
+            color: #fff;
+        }
 
-.login-form button, .admin-panel button {
-    padding: 10px 15px;
-    border: none;
-    background: #007bff;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-}
+        .login-form button, .admin-panel button {
+            padding: 10px 15px;
+            border: none;
+            background: #007bff;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
-.login-form button:hover, .admin-panel button:hover {
-    background: #0056b3;
-}
+        .login-form button:hover, .admin-panel button:hover {
+            background: #b34b00;
+        }
 
-#clock {
-    font-weight: bold;
-}
+        #clock {
+            font-weight: bold;
+        }
 
-#spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+        #spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-.spinner-wheel {
-    border: 16px solid #f3f3f3;
-    border-top: 16px solid #007bff;
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
-}
+        .spinner-wheel {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #ff8000;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-.flames {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 150px;
-    background: url('flames.png') no-repeat center bottom;
-    background-size: cover;
-    animation: flamesAnimation 0.5s linear infinite;
-    transform: translateY(0);
-}
+        .flames {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+            z-index: 1;
+        }
 
-@keyframes flamesAnimation {
-    0% { background-position: 0 0; }
-    50% { transform: translateY(-10px); }
-    100% { background-position: 0 100%; transform: translateY(0); }
-}
-
+        .flames img, .flames video {
+            width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -157,7 +153,12 @@
             </form>
         </div>
     </div>
-    <div class="flames"></div>
+    <div class="flames">
+        <video autoplay loop muted>
+            <source src="flames.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

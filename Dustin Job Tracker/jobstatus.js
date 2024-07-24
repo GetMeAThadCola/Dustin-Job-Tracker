@@ -20,17 +20,21 @@ export default function handler(req, res) {
     const currentDate = new Date();
     const jobData = readJobData();
     let daysSinceLastJob = 0;
-    let hoursSinceLastJob = 'N/A';
+    let hoursSinceLastJob = 0;
+    let minutesSinceLastJob = 0;
+    let secondsSinceLastJob = 0;
 
     if (jobData.lastJobTime) {
       const lastJobDate = new Date(jobData.lastJobTime);
       const diffMilliseconds = currentDate - lastJobDate;
+
       daysSinceLastJob = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
-      const totalHours = Math.floor(diffMilliseconds / (1000 * 60 * 60));
-      hoursSinceLastJob = totalHours % 24;
+      hoursSinceLastJob = Math.floor(diffMilliseconds / (1000 * 60 * 60)) % 24;
+      minutesSinceLastJob = Math.floor(diffMilliseconds / (1000 * 60)) % 60;
+      secondsSinceLastJob = Math.floor(diffMilliseconds / 1000) % 60;
     }
 
-    res.status(200).json({ status: jobData.status, daysSinceLastJob, hoursSinceLastJob });
+    res.status(200).json({ status: jobData.status, daysSinceLastJob, hoursSinceLastJob, minutesSinceLastJob, secondsSinceLastJob });
   } else if (req.method === 'POST') {
     const { status } = req.body;
     const jobData = readJobData();

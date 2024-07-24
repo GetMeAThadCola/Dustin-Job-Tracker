@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const jobStatusElement = document.getElementById('job-status');
     const daysSinceLastJobElement = document.getElementById('days-since-last-job');
     const hoursSinceLastJobElement = document.getElementById('hours-since-last-job');
+    const minutesSinceLastJobElement = document.getElementById('minutes-since-last-job');
+    const secondsSinceLastJobElement = document.getElementById('seconds-since-last-job');
     const loginForm = document.getElementById('login-form');
     const adminPanel = document.getElementById('admin-panel');
     const updateForm = document.getElementById('update-form');
@@ -15,27 +17,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('Network response was not ok');
             }
             const data = await response.json();
-            updateUI(data.status, data.daysSinceLastJob, data.hoursSinceLastJob);
+            updateUI(data.status, data.daysSinceLastJob, data.hoursSinceLastJob, data.minutesSinceLastJob, data.secondsSinceLastJob);
         } catch (error) {
             console.error('Failed to fetch job data:', error);
         }
     }
 
-    function updateUI(status, daysSinceLastJob, hoursSinceLastJob) {
+    function updateUI(status, daysSinceLastJob, hoursSinceLastJob, minutesSinceLastJob, secondsSinceLastJob) {
         jobStatusElement.textContent = status;
         daysSinceLastJobElement.textContent = daysSinceLastJob;
-        hoursSinceLastJobElement.textContent = hoursSinceLastJob !== null ? hoursSinceLastJob : 'N/A';
+        hoursSinceLastJobElement.textContent = hoursSinceLastJob;
+        minutesSinceLastJobElement.textContent = minutesSinceLastJob;
+        secondsSinceLastJobElement.textContent = secondsSinceLastJob;
 
         if (status === 'Yes') {
             jobStatusElement.classList.add('yes');
             jobStatusElement.classList.remove('no');
             daysSinceLastJobElement.classList.add('yes');
             daysSinceLastJobElement.classList.remove('no');
+            hoursSinceLastJobElement.classList.add('yes');
+            hoursSinceLastJobElement.classList.remove('no');
+            minutesSinceLastJobElement.classList.add('yes');
+            minutesSinceLastJobElement.classList.remove('no');
+            secondsSinceLastJobElement.classList.add('yes');
+            secondsSinceLastJobElement.classList.remove('no');
         } else {
             jobStatusElement.classList.add('no');
             jobStatusElement.classList.remove('yes');
             daysSinceLastJobElement.classList.add('no');
             daysSinceLastJobElement.classList.remove('yes');
+            hoursSinceLastJobElement.classList.add('no');
+            hoursSinceLastJobElement.classList.remove('yes');
+            minutesSinceLastJobElement.classList.add('no');
+            minutesSinceLastJobElement.classList.remove('yes');
+            secondsSinceLastJobElement.classList.add('no');
+            secondsSinceLastJobElement.classList.remove('yes');
         }
     }
 

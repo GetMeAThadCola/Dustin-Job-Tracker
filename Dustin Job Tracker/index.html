@@ -4,142 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dustin Job Tracker</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
         body {
             font-family: 'Press Start 2P', cursive;
-            background: url('flames.gif') no-repeat center center fixed; /* Set GIF as background */
+            background: url('flames.gif') no-repeat center center fixed; /* Flames GIF as the background */
             background-size: cover; /* Cover the entire page */
-            color: #fff;
+            color: #00ff00; /* Bright green text */
             text-align: center;
-            padding: 20px;
-            overflow: hidden;
             margin: 0;
-            position: relative;
+            padding: 20px;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background: rgba(51, 51, 51, 0.8); /* Semi-transparent background for readability */
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent black background for readability */
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.7); /* Orange glow */
+        }
+
+        h1, p {
+            color: #00ff00; /* Bright green for all text */
         }
 
         .status p {
             font-size: 1.2em;
-            margin: 10px 0;
-        }
-
-        .status .yes {
-            color: green;
-        }
-
-        .status .no {
-            color: red;
-        }
-
-        .login-form, .admin-panel {
-            margin: 20px 0;
-        }
-
-        .login-form label, .admin-panel label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-
-        .login-form input, .admin-panel input, .admin-panel select {
-            padding: 8px;
-            width: 100%;
-            max-width: 300px;
-            margin: 5px 0;
-            border: 1px transparent;
-            border-radius: 4px;
-            background: transparent;
-            color: #fff;
-        }
-
-        .login-form button, .admin-panel button {
-            padding: 10px 15px;
-            border: none;
-            background: #ff5100;
-            color: #fff;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Press Start 2P', cursive";
-        }
-
-        .login-form button:hover, .admin-panel button:hover {
-            background: #b35400;
-        }
-
-        #clock {
-            font-weight: bold;
-        }
-
-        #spinner {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .spinner-wheel {
-            border: 16px solid #f3f3f3;
-            border-top: 16px solid #ff8000;
-            border-radius: 50%;
-            width: 120px;
-            height: 120px;
-            animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div id="spinner">
-        <div class="spinner-wheel"></div>
-    </div>
-    <div class="container" id="main-content" style="display: none;">
+    <div class="container">
         <h1>Dustin Job Tracker</h1>
         <div class="status">
-            <p>Does Dustin have a job? <span id="job-status" class="no">No</span></p>
-            <p>Days Since Last Job: <span id="days-since-last-job" class="no">0</span></p>
-            <p>Hours Since Last Job: <span id="hours-since-last-job">0</span></p>
-            <p>Minutes Since Last Job: <span id="minutes-since-last-job">0</span></p>
-            <p>Seconds Since Last Job: <span id="seconds-since-last-job">0</span></p>
-            <p>Current Time: <span id="clock"></span></p>
-        </div>
-        <div class="login-form">
-            <h2>Admin Login</h2>
-            <form id="login-form">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <button type="submit">Login</button>
-            </form>
-        </div>
-        <div class="admin-panel" id="admin-panel" style="display: none;">
-            <h2>Admin Panel</h2>
-            <form id="update-form">
-                <label for="job-status-select">Job Status:</label>
-                <select id="job-status-select">
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
-                <label for="last-job-time">Last Job Time (YYYY-MM-DDTHH:MM):</label>
-                <input type="datetime-local" id="last-job-time" required>
-                <button type="submit">Update</button>
-            </form>
+            <p>Does Dustin have a job? <span id="job-status" class="yes">Yes, he has a job</span></p>
+            <p>Time Since Dustin Got His Job:</p>
+            <p>Days: <span id="days">0</span></p>
+            <p>Hours: <span id="hours">0</span></p>
+            <p>Minutes: <span id="minutes">0</span></p>
+            <p>Seconds: <span id="seconds">0</span></p>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        // Timer to count time since job began
+        function startJobTimer() {
+            // Set the start time (when the website loads)
+            const startTime = new Date();
+
+            setInterval(() => {
+                const currentTime = new Date();
+                const elapsedTime = Math.floor((currentTime - startTime) / 1000); // Time difference in seconds
+
+                // Calculate days, hours, minutes, and seconds
+                const days = Math.floor(elapsedTime / (24 * 3600));
+                const hours = Math.floor((elapsedTime % (24 * 3600)) / 3600);
+                const minutes = Math.floor((elapsedTime % 3600) / 60);
+                const seconds = elapsedTime % 60;
+
+                // Update the DOM with the calculated values
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
+            }, 1000); // Update every second
+        }
+
+        // Start the timer when the page loads
+        window.onload = startJobTimer;
+    </script>
 </body>
 </html>

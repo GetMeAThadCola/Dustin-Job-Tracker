@@ -49,14 +49,13 @@
     </div>
 
     <script>
-        // Timer to count time since job began
-        function startJobTimer() {
-            // Set the start time (when the website loads)
-            const startTime = new Date();
+        // Hardcoded start date: 12/18/2024
+        const jobStartTime = new Date("2024-12-18T16:00:00"); // 6pm on December 18, 2024
 
+        function startJobTimer() {
             setInterval(() => {
                 const currentTime = new Date();
-                const elapsedTime = Math.floor((currentTime - startTime) / 1000); // Time difference in seconds
+                const elapsedTime = Math.floor((currentTime - jobStartTime) / 1000); // Time difference in seconds
 
                 // Calculate days, hours, minutes, and seconds
                 const days = Math.floor(elapsedTime / (24 * 3600));
